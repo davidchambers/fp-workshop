@@ -1,0 +1,18 @@
+{
+  "name": "fp-workshop",
+  "private": true,
+  "scripts": {
+    "lint": "npm run lint-src && npm run lint-test",
+    "lint-src": "eslint --config node_modules/sanctuary-style/eslint-es3.json --env es3 --env node --global Promise --rule 'max-len: [off]' --rule 'no-negated-condition: [off]' -- server.js v0 v1",
+    "lint-test": "eslint --config node_modules/sanctuary-style/eslint-es3.json --env es3 --env node --global suite --global test --rule 'max-len: [off]' --rule 'no-negated-condition: [off]' -- test",
+    "test": "mocha --ui tdd -- test/index.js"
+  },
+  "dependencies": {
+    "sanctuary-type-classes": "1.2.x"
+  },
+  "devDependencies": {
+    "eslint": "2.9.x",
+    "mocha": "3.2.x",
+    "sanctuary-style": "0.4.x"
+  }
+}
