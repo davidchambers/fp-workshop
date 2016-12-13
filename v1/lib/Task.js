@@ -21,10 +21,16 @@ Task.Resolved = Resolved;
 
 //  Task#map :: Task a b ~> (b -> c) -> Task a c
 Task.prototype.map = function Task$prototype$map(f) {
-  return TK;
+  var task = this;
+  return Task(function(reject, resolve) {
+    task.fork(reject, function(x) { resolve(f(x)); });
+  });
 };
 
 //  Task#chain :: Task a b ~> (b -> Task a c) -> Task a c
 Task.prototype.chain = function Task$prototype$chain(f) {
-  return TK;
+  var task = this;
+  return Task(function(reject, resolve) {
+    task.fork(reject, function(x) { f(x).fork(reject, resolve); });
+  });
 };

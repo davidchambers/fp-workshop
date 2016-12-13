@@ -16,13 +16,20 @@ var singleton       = require('./lib/singleton');
 
 
 //  countryFromResponseBody :: String -> Result String String
-var countryFromResponseBody = function(s) {
-  return TK;
-};
+var countryFromResponseBody =
+pipe([parseJson(isAccessible),              // Result String Accessible
+      chain(get(isAccessible)('address')),  // Result String Accessible
+      chain(get(isString)('country'))]);    // Result String String
 
 //  v1 :: Object -> String -> Task String String
 module.exports = function(options) {
-  return function(id) {
-    return TK;
-  };
+  return pipe([
+    concat('/users/'),              // :: String
+    singleton('path'),              // :: { path :: String }
+    merge(options),                 // :: { path :: String, hostname :: String, port :: Number }
+    assoc('method')('GET'),         // :: { path :: String, hostname :: String, port :: Number, method :: String }
+    request,                        // :: Task String String
+    map(countryFromResponseBody),   // :: Task String (Result String String)
+    chain(resultToTask)             // :: Task String String
+  ]);
 };

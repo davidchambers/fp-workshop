@@ -39,7 +39,7 @@ Result.fold = function(f) {
 //  > Success(64).map(Math.sqrt)
 //  Success(8)
 _Result.prototype.map = function(f) {
-  return TK;
+  return this.isFailure ? this : Success(f(this.value));
 };
 
 //  Result#chain :: Result a b ~> (b -> Result a c) -> Result a c
@@ -55,7 +55,7 @@ _Result.prototype.map = function(f) {
 //  > Success(64).chain(sqrt)
 //  Success(8)
 _Result.prototype.chain = function(f) {
-  return TK;
+  return this.isFailure ? this : f(this.value);
 };
 
 _Result.prototype.inspect =
